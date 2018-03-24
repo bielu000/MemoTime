@@ -8,7 +8,7 @@ namespace MemoTime.Core.Domain
         public Project Project { get; protected set; }
         public string Name { get; protected set; }
         public string Priority { get; protected set; }
-        public string Label { get; protected set; }
+        public Label Label { get; protected set; }
         public DateTime CreatedAt { get; protected set; }
         public DateTime DueDate { get; protected set; }
         public bool Done { get; protected set; }
@@ -58,6 +58,11 @@ namespace MemoTime.Core.Domain
         public void SetDone()
         {
             Done = true;
+        }
+
+        public void SetLabel(Label label)
+        {
+            Label = label;
         }
     }
 }

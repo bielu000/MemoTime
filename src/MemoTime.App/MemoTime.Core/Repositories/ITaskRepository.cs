@@ -15,5 +15,6 @@ namespace MemoTime.Core.Repositories
         Task<TodoTask> GetAsync(Guid id);
         Task UpdateAsync(TodoTask task);
         Task RemoveAsync(TodoTask task);
+        Task<IEnumerable<TodoTask>> BrowseAsync(Guid userId);
     }
 }

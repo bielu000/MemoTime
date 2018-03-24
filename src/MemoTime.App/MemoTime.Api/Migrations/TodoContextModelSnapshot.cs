@@ -20,6 +20,22 @@ namespace MemoTime.Api.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("MemoTime.Core.Domain.Label", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<Guid?>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Labels");
+                });
+
             modelBuilder.Entity("MemoTime.Core.Domain.Project", b =>
                 {
                     b.Property<Guid>("Id")
@@ -49,7 +65,7 @@ namespace MemoTime.Api.Migrations
 
                     b.Property<DateTime>("DueDate");
 
-                    b.Property<string>("Label");
+                    b.Property<Guid?>("LabelId");
 
                     b.Property<string>("Name");
 
@@ -60,6 +76,8 @@ namespace MemoTime.Api.Migrations
                     b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LabelId");
 
                     b.HasIndex("ProjectId");
 
@@ -86,8 +104,20 @@ namespace MemoTime.Api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("MemoTime.Core.Domain.Label", b =>
+                {
+                    b.HasOne("MemoTime.Core.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("MemoTime.Core.Domain.TodoTask", b =>
                 {
+                    b.HasOne("MemoTime.Core.Domain.Label", "Label")
+                        .WithMany("Tasks")
+                        .HasForeignKey("LabelId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("MemoTime.Core.Domain.Project", "Project")
                         .WithMany("Tasks")
                         .HasForeignKey("ProjectId")
